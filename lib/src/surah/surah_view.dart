@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:june/june.dart';
 import 'package:surah_lazim/src/surah/surah_rawak.dart';
-import 'package:surah_lazim/src/util/nombor_rawak.dart';
 
 import '../settings/settings_view.dart';
 import 'package:quran/quran.dart' as quran;
