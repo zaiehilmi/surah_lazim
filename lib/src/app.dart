@@ -62,23 +62,14 @@ class SurahLazim extends StatelessWidget {
           themeMode: settingsController.themeMode,
           debugShowCheckedModeBanner: false,
 
-          // Define a function to handle named routes in order to support
-          // Flutter web url navigation and deep linking.
           onGenerateRoute: (RouteSettings routeSettings) {
             return MaterialPageRoute<void>(
-              settings: routeSettings,
-              builder: (BuildContext context) {
-                switch (routeSettings.name) {
-                  case SettingsView.routeName:
-                    return SettingsView(controller: settingsController);
-                  case SampleItemDetailsView.routeName:
-                    return const SampleItemDetailsView();
-                  case SurahView.routeName:
-                  default:
-                    return const SurahView();
-                }
-              },
-            );
+                settings: routeSettings,
+                builder: (BuildContext context) => switch (routeSettings.name) {
+                      SettingsView.routeName => SettingsView(controller: settingsController),
+                      SurahView.routeName => const SurahView(),
+                      _ => const SurahView(),
+                    });
           },
         );
       },

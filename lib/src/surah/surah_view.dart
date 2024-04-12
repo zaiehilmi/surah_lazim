@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:june/june.dart';
+import 'package:surah_lazim/src/surah/surah_rawak.dart';
 import 'package:surah_lazim/src/util/nombor_rawak.dart';
 
 import '../settings/settings_view.dart';
@@ -15,12 +17,18 @@ class SurahView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final (surah_1, surah_2) = dapatkanSurahRawak();
-
     return Scaffold(
         appBar: AppBar(
           title: Text(AppLocalizations.of(context)!.appTitle),
           actions: [
+            IconButton(
+              onPressed: () {
+                June.getState(SurahRawak())
+                  ..rombakBaru()
+                  ..setState();
+              },
+              icon: const Icon(Icons.update_rounded),
+            ),
             IconButton(
               icon: const Icon(Icons.settings),
               onPressed: () {
@@ -46,60 +54,74 @@ class SurahView extends StatelessWidget {
               ),
 
               // paparan nama surah
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Text(
-                    '2  ${quran.getSurahNameArabic(surah_2)}',
-                    style: const TextStyle(fontSize: 25),
-                  ),
-                  Text(
-                    '1  ${quran.getSurahNameArabic(surah_1)}',
-                    style: const TextStyle(fontSize: 25),
-                  ),
-                ],
+              JuneBuilder(
+                () => SurahRawak(),
+                builder: (vm) => Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    _paparNamaSurah(vm.surah_2, 2),
+                    _paparNamaSurah(vm.surah_1, 1),
+                  ],
+                ),
               ),
 
               // paparan surah
               Expanded(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: quran.getVerseCount(surah_2),
-                        itemBuilder: (context, index) {
-                          return ListTile(
-                            title: Text(
-                              quran.getVerse(surah_2, index + 1, verseEndSymbol: true),
-                              textAlign: TextAlign.right,
-                              style: const TextStyle(fontSize: 50),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: quran.getVerseCount(surah_1),
-                        itemBuilder: (context, index) {
-                          return ListTile(
-                            title: Text(
-                              quran.getVerse(surah_1, index + 1),
-                              textAlign: TextAlign.right,
-                              style: const TextStyle(fontSize: 50),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ],
+                child: JuneBuilder(
+                  () => SurahRawak(),
+                  builder: (vm) => Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Expanded(child: _paparSurah(vm.surah_2)),
+                      Expanded(child: _paparSurah(vm.surah_1)),
+                    ],
+                  ),
                 ),
               ),
             ],
           ),
         ));
   }
+
+  Row _paparNamaSurah(int surah, int susunan) => Row(
+        children: [
+          Container(
+            color: Colors.white24,
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Text(
+              quran.getSurahNameArabic(surah),
+              textDirection: TextDirection.rtl,
+              style: const TextStyle(fontSize: 32),
+            ),
+          ),
+          // const SizedBox(width: 15),
+          Container(
+            color: Colors.lightGreen,
+            width: 40,
+            child: Center(
+              child: Text(
+                susunan.toString(),
+                textDirection: TextDirection.rtl,
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+        ],
+      );
+
+  ListView _paparSurah(int surah) => ListView.builder(
+      itemCount: quran.getVerseCount(surah),
+      itemBuilder: (context, index) => ListTile(
+            title: Text(
+              quran.getVerse(surah, index + 1, verseEndSymbol: false),
+              textDirection: TextDirection.rtl,
+              style: const TextStyle(fontSize: 50),
+            ),
+          ));
 }
