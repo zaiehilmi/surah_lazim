@@ -6,7 +6,6 @@ import 'package:surah_lazim/src/surah/surah_rawak.dart';
 import '../settings/settings_view.dart';
 import 'package:quran/quran.dart' as quran;
 
-/// Displays a list of SampleItems.
 class SurahView extends StatelessWidget {
   const SurahView({
     super.key,
@@ -36,13 +35,6 @@ class SurahView extends StatelessWidget {
             ),
           ],
         ),
-
-        // To work with lists that may contain a large number of items, it’s best
-        // to use the ListView.builder constructor.
-        //
-        // In contrast to the default ListView constructor, which requires
-        // building all Widgets up front, the ListView.builder constructor lazily
-        // builds Widgets as they’re scrolled into view.
         body: SizedBox.expand(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -86,7 +78,9 @@ class SurahView extends StatelessWidget {
 
   Row _paparNamaSurah(int surah, int susunan) => Row(
         children: [
+          // susunan dalam al-quran
           _paparanNombor(surah, warnaBg: Colors.teal, saizFon: 17),
+
           Container(
             color: Colors.white24,
             padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -96,6 +90,8 @@ class SurahView extends StatelessWidget {
               style: const TextStyle(fontSize: 32),
             ),
           ),
+
+          // turutan menaik
           _paparanNombor(susunan),
         ],
       );
