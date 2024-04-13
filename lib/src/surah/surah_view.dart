@@ -86,6 +86,7 @@ class SurahView extends StatelessWidget {
 
   Row _paparNamaSurah(int surah, int susunan) => Row(
         children: [
+          _paparanNombor(surah, warnaBg: Colors.teal, saizFon: 17),
           Container(
             color: Colors.white24,
             padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -95,24 +96,30 @@ class SurahView extends StatelessWidget {
               style: const TextStyle(fontSize: 32),
             ),
           ),
-          // const SizedBox(width: 15),
-          Container(
-            color: Colors.lightGreen,
-            width: 40,
-            child: Center(
-              child: Text(
-                susunan.toString(),
-                textDirection: TextDirection.rtl,
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ),
+          _paparanNombor(susunan),
         ],
       );
+
+  Container _paparanNombor(
+    int nombor, {
+    Color warnaBg = Colors.lightGreen,
+    double saizFon = 32,
+  }) =>
+      Container(
+          color: warnaBg,
+          width: 40,
+          height: 46,
+          child: Center(
+            child: Text(
+              nombor.toString(),
+              textDirection: TextDirection.rtl,
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: saizFon,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ));
 
   ListView _paparSurah(int surah) => ListView.builder(
       itemCount: quran.getVerseCount(surah),
